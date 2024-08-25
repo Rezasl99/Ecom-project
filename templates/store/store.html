@@ -25,13 +25,9 @@
                 <div class="card-body">
                     
                     <ul class="list-menu">
-                    <li><a href="#">People  </a></li>
-                    <li><a href="#">Watches </a></li>
-                    <li><a href="#">Cinema  </a></li>
-                    <li><a href="#">Clothes  </a></li>
-                    <li><a href="#">Home items </a></li>
-                    <li><a href="#">Animals</a></li>
-                    <li><a href="#">People </a></li>
+                        {% for category in category_links %}
+                    <li><a href="{{category.get_url}}">{{category.category_name}}</a></li>
+                        {% endfor %}
                     </ul>
     
                 </div> <!-- card-body.// -->
@@ -118,7 +114,7 @@
     
     <header class="border-bottom mb-4 pb-3">
             <div class="form-inline">
-                <span class="mr-md-auto">32 Items found </span>
+                <span class="mr-md-auto"><b>{{product_count}}</b> Items found </span>
                 
             </div>
     </header><!-- sect-heading -->
@@ -136,11 +132,11 @@
                     <div class="fix-height">
                         <a href="./product-detail.html" class="title">{{product.product_name}}</a>
                         <div class="price-wrap mt-2">
-                            <span class="price">{{product.product_price}}</span>
+                            <span class="price">$ {{product.product_price}}</span>
                             <!-- <del class="price-old">$1980</del> -->
                         </div> <!-- price-wrap.// -->
                     </div>
-                    <a href="#" class="btn btn-block btn-success">Add to cart </a>
+                    <a href="#" class="btn btn-block btn-primary">Add to cart </a>
                 </figcaption>
             </figure>
         </div> <!-- col.// -->
