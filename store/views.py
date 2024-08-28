@@ -3,7 +3,7 @@ from .models import Product
 from category.models import Category
 
 
-
+#ویو فروشگاه
 def store(request, category_slug=None):
     categories = None
     products = None
@@ -24,7 +24,7 @@ def store(request, category_slug=None):
     return render(request, 'store/store.html', context)
 
 
-
+#ویو برای هر یک از محصولات
 def product_detail(request,category_slug, product_slug):
     try:
         single_product = Product.objects.get(category__category_slug = category_slug, product_slug = product_slug)

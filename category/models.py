@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 # Create your models here.
-
+#مدل کاتگوری
 class Category (models.Model):
     category_name = models.CharField(max_length=50, unique=True)
     category_slug = models.SlugField(max_length=150, unique=True)
@@ -11,7 +11,7 @@ class Category (models.Model):
     class Meta:
         verbose_name = 'Category'
         verbose_name_plural = 'Categories'
-
+#فانکشن برای گرفتن لینک
     def get_url(self):
         return reverse('products_by_category', args=[self.category_slug])
 
