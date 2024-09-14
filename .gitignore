@@ -21,3 +21,5 @@ local_settings.py
 # IDE-specific
 .idea/
 .vscode/
+Ecom project.code-workspace
+
