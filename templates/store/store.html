@@ -1,7 +1,11 @@
 {% extends 'base.html'%} {% load static %} {% block content %}
 <section class="section-pagetop bg">
   <div class="container">
+    {% if 'search' in request.path%}
+    <h2 class="title-page">Your search results</h2>
+    {% else %}
     <h2 class="title-page">Our Store</h2>
+    {% endif %}
   </div>
   <!-- container //  -->
 </section>
@@ -121,6 +125,7 @@
     </header><!-- sect-heading -->
     
     <div class="row">
+        {% if products%}
         {%for product in products%}
         {% if product.is_available%}
         <div class="col-md-4">
@@ -162,29 +167,44 @@
                 </figcaption>
             </figure>
         </div> <!-- col.// -->
+
+       
+       
     
         {% endif %}
 
     
          {% endfor %}
-
+         {% else %}
+         <div>
+             <h2>No search result found</h2>
+         </div>
+         {% endif %}
     </div> <!-- row end.// -->
     
     
     <nav class="mt-4" aria-label="Page navigation sample">
+        {% if products.has_other_pages%}
       <ul class="pagination">
         {% if products.has_previous %}
-        <li class="page-item active"><a class="page-link" href="?page=1">First</a></li>
         <li class="page-item active"><a class="page-link" href="?page={{ products.previous_page_number }}">Previous</a></li>
         {% endif %}
-
-        <li class="page-item active"><a class="page-link" href="#">{{ products.number }} of {{ products.paginator.num_pages }}</a></li>
+        {% for i in products.paginator.page_range %}
+            {% if i >= products.number|add:'-2' and i <= products.number|add:'2' %}
+                {% if products.number == i%}
+            <li class="page-item active"><a class="page-link" href="#">{{ i }}</a></li>
+                {% else %}
+            <li class="page-item active"><a class="page-link" href="?page={{i}}">{{ i }} </a></li>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+       
         {% if products.has_next %}
         <li class="page-item active"><a class="page-link" href="?page={{ products.next_page_number }}">Next</a></li>
-        <li class="page-item active"><a class="page-link" href="?page={{ products.paginator.num_pages }}">Last</a></li>
         {% endif %}
 
       </ul>
+      {% endif %}
     </nav>
     
         </main> <!-- col.// -->
