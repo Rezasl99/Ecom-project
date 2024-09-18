@@ -14,6 +14,8 @@ def _cart_id(request):
 
 #فانکشن برای اضافه کردن آیتم به کارتمون
 def add_cart(request, product_id):
+    color = request.GET.get('color')
+    size = request.GET.get('size')
     product = Product.objects.get(id=product_id)
     try:
         cart = Cart.objects.get(cart_id=_cart_id(request))
@@ -34,8 +36,6 @@ def add_cart(request, product_id):
             cart = cart,
         )
         cart_item.save()
-    # return HttpResponse(cart_item.quantity)
-    # exit()
     return redirect('cart')
 
 
