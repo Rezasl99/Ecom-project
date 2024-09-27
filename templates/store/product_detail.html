@@ -12,7 +12,8 @@
         <div class="img-big-wrap">
            <a href="#"><img src="{{single_product.product_images.url}}"></a>
         </div> <!-- img-big-wrap.// -->
-          <form action="{% url 'add_cart' single_product.id %}" method="GET">
+          <form action="{% url 'add_cart' single_product.id %}" method="POST">
+            {% csrf_token %}
             </article> <!-- gallery-wrap .end// -->
                     </aside>
                     <main class="col-md-6 border-left">
@@ -28,34 +29,35 @@
             
             
             <hr>
-                <div class="row">
-                    <div class="item-option-select">
-                        <h6>Choose Color</h6>
-                          <select name="color" class="form-control" required>
-                            <option value="" disabled selected>Choose Color</option>
-                            {% for i in single_product.variations.all %}
-                            <option value="{{i.variation_value}}">{{i.variation_value}}</option>
-                            {% endfor %}
-                          </select>
-                    </div>
-                </div> <!-- row.// -->
-                <!-- <div class="row">
-                    <div class="item-option-select">
-                        <h6>Select Size</h6>
-                        <select name="size" class="form-control">
-                            
-                            <option value="small"></option>
-                    
-                        </select>
-                    </div>
-                </div>  -->
+            <div class="row">
+                <div class="item-option-select">
+                    <h6>Choose Color</h6>
+                      <select name="color" class="form-control" required>
+                        <option value="" disabled selected>Choose Color</option>
+                        {% for variation in single_product.variations.colors %}
+                        <option value="{{variation.variation_value | lower  }}">{{variation.variation_value | capfirst}}</option>
+                        {% endfor %}
+                      </select>
+                </div>
+            </div> <!-- row.// -->
+            <div class="row">
+                <div class="item-option-select">
+                    <h6>Select Size</h6>                       
+                    <select name="size" class="form-control" required>
+                        <option value="" disabled selected>Choose Size</option>
+                    {% for i in single_product.variations.sizes %}
+                    <option value="{{ i.variation_value | lower }}">{{ i.variation_value | capfirst }}</option>
+                    {% endfor %}
+                    </select>
+                </div>
+            </div>
                 <!-- row.// -->
                 <hr>
                 {% if single_product.product_stock <= 0 %}
                   <h5 class="text-danger"> Out of stock </h5>
                 {% else %}
                   {% if in_cart %}
-                  <a href="{% url 'add_cart' single_product.id %}" class="btn  btn-primary"> <span class="text">Already added</span> <i class="fas fa-check"></i>  </a>
+                  <button type="submit" class="btn  btn-primary"> <span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i>  </button>
                   <a href="{% url 'cart' %}" class="btn  btn-outline-primary"> <span class="text">View card</span> <i class="fas fa-eye"></i>  </a>
                   {% else %}
                 <button type="submit" class="btn  btn-primary"> <span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i>  </button>
