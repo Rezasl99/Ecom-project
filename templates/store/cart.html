@@ -6,7 +6,7 @@
     
     <!-- ============================ COMPONENT 1 ================================= -->
     {% if not cart_items%}
-    <h1 class="text-center">Nothing to see here</h1>
+    <h1 class="text-center">You haven't added any items yet</h1>
     <br>
     <div class="text-center">
         <a href="{% url 'store' %}" class="btn btn-primary">Continue shopping</a>
@@ -100,7 +100,7 @@
                 <p class="text-center mb-3">
                     <img src="{% static './images/misc/payments.png' %}" height="26">
                 </p>
-                <a href="./place-order.html" class="btn btn-primary btn-block"> Checkout </a>
+                <a href="{% url 'checkout' %}" class="btn btn-primary btn-block"> Checkout </a>
                 <a href="{% url 'store' %}" class="btn btn-light btn-block">Continue Shopping</a>
             </div> <!-- card-body.// -->
             </div> <!-- card.// -->
