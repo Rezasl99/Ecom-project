@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, Variations
+from .models import Product, Variations, ReviewRating
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('product_name', 'product_price', 'product_stock' , 'category', 'id')
@@ -14,6 +14,7 @@ class VariationAdmin(admin.ModelAdmin):
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Variations, VariationAdmin)
+admin.site.register(ReviewRating)
 
 
 

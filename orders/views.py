@@ -116,17 +116,18 @@ def place_order(request, total= 0, quantity= 0):
 
 
                 # Send order recieved email to customer
+            ordered_products = OrderProduct.objects.filter(order_id=order.id)
             mail_subject = 'Thank you for your order!'
             message = render_to_string('orders/order_recieved_email.html', {
                 'user': current_user,
                 'order': order,
+                'ordered_products': ordered_products,
             })
             to_email = request.user.email
             send_email = EmailMessage(mail_subject, message, to=[to_email])
             send_email.send()
 
             order = Order.objects.get(order_number=order_number, is_ordered=True)
-            ordered_products = OrderProduct.objects.filter(order_id=order.id)
 
         context = {
                 'order_number' : order_number,
