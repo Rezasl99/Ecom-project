@@ -4,6 +4,7 @@ from django.urls import reverse
 from accounts.models import Account
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db.models import Avg, Count
+from django.utils import timezone
 # Create your models here.
 #مدل محصولات
 class Product(models.Model):
@@ -14,9 +15,10 @@ class Product(models.Model):
     product_images      = models.ImageField(upload_to='photo/products')
     product_stock       = models.IntegerField()
     is_available        = models.BooleanField(default=True)
-    category            = models.ForeignKey(Category, on_delete=models.CASCADE) 
+    category            = models.ForeignKey(Category, on_delete=models.CASCADE)
     created_date        = models.DateTimeField(auto_now_add=True)
     modified_date       = models.DateTimeField(auto_now=True)
+    views               = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.product_name
@@ -35,8 +37,9 @@ class Product(models.Model):
             count = int(reviews['count'])
         return count
 
-# برای گرفتن لینک محصول
+#
     def get_url(self):
+        """ Helper function for getting the url of the product """
         return reverse('products_detail', args=[self.category.category_slug, self.product_slug])
 
 class VariationManager(models.Manager):
@@ -73,9 +76,19 @@ class ReviewRating(models.Model):
     status = models.BooleanField(default=True)
     created_date = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
-    
+
     def __str__(self):
         return self.subject
 
+class ProductView(models.Model):
+    product = models.ForeignKey('Product', on_delete=models.CASCADE)
+    ip_address = models.CharField(max_length=45)  # IPv6-compatible
+    timestamp = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        unique_together = ('product', 'ip_address')  # Each IP can only have one record per product
+
+    def __str__(self):
+        return f"{self.product} viewed by {self.ip_address}"
 
 
