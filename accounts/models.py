@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-############ مدل درست کردن کاستوم یوزر و سوپر یوزر ###########
+# Custom user 
 class AccountManager(BaseUserManager):
     def create_user(self, first_name, last_name, username, email, password=None):
         if not email:
@@ -48,7 +48,7 @@ class Account(AbstractBaseUser):
     is_staff      = models.BooleanField(default=False)
     is_active     = models.BooleanField(default=False)
     is_superadmin = models.BooleanField(default=False)
-                    ###########  با ایمیل لاگین کردن  ###########
+                   
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
 
