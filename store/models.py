@@ -5,10 +5,12 @@ from accounts.models import Account
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db.models import Avg, Count
 from django.utils import timezone
+from django.utils import translation
 # Create your models here.
 #مدل محصولات
 class Product(models.Model):
     product_name        = models.CharField(max_length=200,unique=True)
+    product_fa_name     = models.CharField(max_length=100, default='نام محصول')
     product_slug        = models.SlugField(max_length=200,unique=True)
     product_description = models.TextField(max_length=500,blank=True)
     product_price       = models.FloatField()
@@ -37,6 +39,10 @@ class Product(models.Model):
             count = int(reviews['count'])
         return count
 
+    def get_name(self):
+        if translation.get_language() == 'fa':
+            return self.product_fa_name
+        return self.product_name
 #
     def get_url(self):
         """ Helper function for getting the url of the product """

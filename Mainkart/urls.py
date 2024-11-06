@@ -3,10 +3,12 @@ from django.urls import path , include
 from . import views
 from django.conf.urls.static import static
 from django.conf import settings
+from django.conf.urls.i18n import i18n_patterns
 
 
 urlpatterns = [
     path('admin/', include('admin_honeypot.urls', namespace='admin_honeypot')),
+    path('i18n/', include('django.conf.urls.i18n')),
     path('notadmin/', admin.site.urls),
     path('' ,views.home , name='home'),
     path('store/', include('store.urls')),
