@@ -12,6 +12,10 @@ from orders.models import OrderProduct
 from django.utils import timezone
 from datetime import timedelta
 from django.db.models import F
+from rest_framework import mixins, generics
+from .models import Product
+from .serializers import ProductSerializer
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 """ View for the store """
 
 
@@ -137,3 +141,35 @@ def submit_review(request, product_id):
                 data.save()
                 messages.success(request, 'Your review has been added.')
                 return redirect(current_url)
+
+class ProductView(
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+    generics.GenericAPIView
+):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    # Django REST Framework uses 'pk' (primary key) by default, so no need to specify lookup_field.
+    # Alternatively, you can set lookup_field = 'id' for explicitness.
+
+    def get(self, request, *args, **kwargs):
+        if 'pk' in kwargs:
+            return self.retrieve(request, *args, **kwargs)
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+    def patch(self, request, *args, **kwargs):
+        return self.partial_update(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
